@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>JS Loop Runner - 配置</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <h1>JS Loop Runner 配置</h1>
+    <p class="desc">配置定时循环执行的 JS 代码、循环间隔和目标返回值。</p>
+
+    <form id="options-form">
+      <div class="field">
+        <label for="code">JS 代码（返回值会与目标状态码比较）</label>
+        <textarea id="code" rows="10" placeholder="// 代码作为函数体执行，必须用 return 返回值&#10;// 支持 const、let、分号、循环等任意语法&#10;const el = document.querySelector('.status');&#10;return el ? el.textContent.trim() : null;"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="interval">循环间隔（毫秒）</label>
+        <input type="number" id="interval" min="100" value="1000" step="100">
+        <span class="hint">建议不小于 100ms，避免影响页面性能</span>
+      </div>
+
+      <div class="field">
+        <label for="stop-return">停止状态码（匹配后停止循环）</label>
+        <input type="text" id="stop-return" placeholder='例如：done、complete、200'>
+        <span class="hint">返回值匹配此值时，停止循环并发送通知。留空则不启用停止匹配。</span>
+      </div>
+
+      <div class="field">
+        <label for="refresh-return">刷新状态码（匹配后刷新页面并重新执行）</label>
+        <input type="text" id="refresh-return" placeholder='例如：retry、refresh、429'>
+        <span class="hint">返回值匹配此值时，刷新页面并自动重新开始循环。URL 变化则自动停止。留空则不启用刷新。</span>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn-primary">保存配置</button>
+        <span id="save-status"></span>
+      </div>
+    </form>
+
+    <hr>
+
+    <details class="help">
+      <summary>使用说明</summary>
+      <ul>
+        <li>JS 代码中使用 <code>return</code> 返回值，每次执行的结果会与「目标返回值」比较。</li>
+        <li>代码运行在页面上下文中，可以访问页面的 DOM 和 JS 全局变量。</li>
+        <li>循环会在匹配目标返回值后自动停止，并发送浏览器通知。</li>
+        <li>点击插件图标打开弹窗，在弹窗中启动/停止当前页面的循环。</li>
+      </ul>
+    </details>
+
+    <div class="disclaimer">
+      本程序仅用于研究学习目的，不保证实际使用效果，请遵循当地法律法规。<br>
+      交流及版权联系：your-email@example.com
+    </div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

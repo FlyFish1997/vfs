@@ -1,0 +1,26 @@
+# 依赖与构建产物
+node_modules/
+dist/
+build/
+*.zip
+
+# 日志
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# 编辑器 / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 操作系统
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 本地覆盖配置
+.env
+.env.local
+*.local

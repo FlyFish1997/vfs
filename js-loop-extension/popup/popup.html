@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>JS Loop Runner</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <header>
+      <span class="logo">&#x1F504;</span>
+      <h1>JS Loop Runner</h1>
+    </header>
+
+    <div class="status-bar">
+      <span class="dot" id="status-dot"></span>
+      <span id="status-text">就绪</span>
+    </div>
+
+    <div class="info" id="info-area">
+      <div class="info-row">
+        <span class="label">间隔:</span>
+        <span id="info-interval">-</span>
+      </div>
+      <div class="info-row">
+        <span class="label">停止:</span>
+        <span id="info-stop">-</span>
+      </div>
+      <div class="info-row">
+        <span class="label">刷新:</span>
+        <span id="info-refresh">-</span>
+      </div>
+      <div class="info-row">
+        <span class="label">计数:</span>
+        <span id="info-count">0</span>
+      </div>
+    </div>
+
+    <div class="result-area" id="result-area" hidden>
+      <div class="label">最近返回:</div>
+      <pre id="result-value"></pre>
+    </div>
+
+    <div class="actions">
+      <button id="btn-start" class="btn btn-start">启动</button>
+      <button id="btn-stop" class="btn btn-stop" disabled>停止</button>
+    </div>
+
+    <div class="disclaimer">
+      仅供研究学习 | 交流及版权联系：your-email@example.com
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

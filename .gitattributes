@@ -1,0 +1,11 @@
+# 统一以 LF 存储到仓库，检出时由各平台自行处理
+* text=auto eol=lf
+
+*.js   text eol=lf
+*.json text eol=lf
+*.css  text eol=lf
+*.html text eol=lf
+*.md   text eol=lf
+*.txt  text eol=lf
+*.png  binary
+*.ico  binary

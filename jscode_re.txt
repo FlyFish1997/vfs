@@ -1,0 +1,85 @@
+
+window.CheckReschedule = function(){            
+
+            const GlobalRequestId = $("#GlobalRequestId").val();
+            const Globalsessionid = $("#Globalsessionid").val();
+            const Globalsessiontoken  = $("#Globalsessiontoken").val();	
+            
+    
+            var chkObj_Session = { request_id: GlobalRequestId, session_id: Globalsessionid, session_token: Globalsessiontoken }
+            var chkParameter =  JSON.stringify(chkObj_Session);
+
+		var returncode = 0;
+            
+            $.ajax({
+                url: "../../api/rScheduleDate/",
+                type: 'POST',
+                data: chkParameter,
+                dataType: 'json',
+                crossDomain: true,
+                async: false,
+                jsonp: false,
+                cache: false,
+                timeout: 30000,
+                headers: {"Content-Type": "text/plain"},
+                beforeSend: function (xhr) {
+
+                    if (xhr.overrideMimeType) {
+                        xhr.overrideMimeType("application/json");
+                    }
+                },
+                success: function (res) {
+                    //$('#myModal').modal('show');                  
+                    //$("#display_date").html(res.NextSlot);
+                    if(res.status==1){
+                        // alert("Reschedule successfully updated.");
+                        // return false;
+                        schedule_date = res.NextSlot;      
+                                          
+                        $("#display_date").html(res.NextSlot);
+
+			console.log(new Date().toLocaleTimeString()+" get new date:"+res.NextSlot);
+
+			if(res.NextSlot < '2026-08-16'){
+				RescheduleSlot();
+				returncode = 1;
+			}
+			
+			returncode = 2;
+                    }else if(res.status==2){
+                        console.log(new Date().toLocaleTimeString()+" we will not be able to process your appointment request as your departure date is within 20 days from the date of appointment.");
+                        returncode = 2;
+                    }else if(res.status==3){
+                        console.log(new Date().toLocaleTimeString()+" Please note : The next available date is the same as the date you already have the appointment.  we are unable to reschedule this now.");
+                        returncode = 2;
+                    }else if(res.status==4){
+                        console.log(new Date().toLocaleTimeString()+" Slots not available.");
+                        returncode = 2;
+                    }else{
+                       console.log("Error"); 
+                       returncode = 4;
+                    }
+
+                }
+            });
+
+		return returncode;
+
+          }
+		  
+		  let returncode = CheckReschedule();
+		  
+		  if(returncode != 1){
+			if(!window.__timer){
+			window.__timer = Date.now();
+		  }
+		  
+		  const elapsed = Date.now() - window.__timer;
+		  if(elapsed >= 60*60*1000){
+			window.__timer = Date.now();
+			return 4;
+		  }
+		  }
+		  
+		  
+		  return returncode;

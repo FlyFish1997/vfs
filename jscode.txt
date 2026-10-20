@@ -1,0 +1,86 @@
+const old_paynow = window.paynow;
+
+window.paynow = function(){
+
+console.log("开始调用接口");
+
+
+                // var form = document.getElementById('actionForm');
+                // form.action = 'https://vfseu.mioot.com/forms/ITACHN/payload/';
+                // form.target = '_blank';
+                // form.submit();
+
+                const GlobalRequestId = $("#GlobalRequestId").val();
+                const Globalsessionid = $("#Globalsessionid").val();
+                const Globalsessiontoken  = $("#Globalsessiontoken").val();	
+				
+				let returncode = 0;
+                
+        
+                var chkObj_Session = { request_id: GlobalRequestId, session_id: Globalsessionid, session_token: Globalsessiontoken }
+                var chkParameter =  JSON.stringify(chkObj_Session);
+
+                $.ajax({
+                    url: "../../api/slotBlock/",
+                    type: 'POST',
+                    data: chkParameter,
+                    dataType: 'json',
+                    crossDomain: true,
+                    async: false,
+                    jsonp: false,
+                    cache: false,
+                    timeout: 30000,
+                    headers: {"Content-Type": "text/plain"},
+                    beforeSend: function (xhr) {
+
+                        if (xhr.overrideMimeType) {
+                            xhr.overrideMimeType("application/json");
+                        }
+                    },
+                    success: function (res) {
+
+                        console.log(res);
+                        
+                        if(res.status==1){
+                            var form = document.getElementById('actionForm');
+                            form.action = 'https://vfseu.mioot.com/forms/ITACHN/payload/';
+                            form.target = '_blank';
+                            form.submit(); 
+							console.log(new Date().toLocaleTimeString()+" slot success");
+							returncode = 1;
+                        }else if(res.status==2){
+                            console.log(new Date().toLocaleTimeString()+" Already slot blocked"); 
+                            returncode = 2;                           
+                        }else if(res.status==3){
+                            console.log(new Date().toLocaleTimeString()+" Slots Not Available"); 
+                            returncode = 2;                           
+                        }else if(res.status==4){
+                            console.log(new Date().toLocaleTimeString()+" Please note that once you clicked the link to make the payment, you will have to wait for "+res.waittime+" minutes before you try to click again for the next attempt."); 
+                            returncode = 3;                           
+                        }else{
+                            console.log("Error"); 
+                            returncode = 4;
+                        }
+
+                    }
+            });
+
+			return returncode;
+          }
+		  
+		  let returncode = paynow();
+		  
+		  if(returncode != 1){
+			if(!window.__timer){
+			window.__timer = Date.now();
+		  }
+		  
+		  const elapsed = Date.now() - window.__timer;
+		  if(elapsed >= 60*60*1000){
+			window.__timer = Date.now();
+			return 4;
+		  }
+		  }
+		  
+		  
+		  return returncode;
